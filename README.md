@@ -89,10 +89,10 @@ $ echo -ne "\0\0\0\x07ssh-rsa" | base64
 AAAAB3NzaC1yc2E=
 
 $ echo -ne "\0\0\0\x07ssh-rsa\x00" | base64
-AAAAB3NzaC1kc3MA
+AAAAB3NzaC1yc2EA
 
 $ echo -ne "\0\0\0\x07ssh-rsa\xff" | base64
-AAAAB3NzaC1kc3P/
+AAAAB3NzaC1yc2H/
 ```
 
 Because of this, if the base64 output final character is `=` the last 2 characters cannot be reliably used in regular expression matching.
