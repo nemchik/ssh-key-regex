@@ -18,6 +18,9 @@ Using `ssh-keygen -t ...` for each of the above types as follows:
 ```shell
 ssh-keygen -t dsa
 ssh-keygen -t ecdsa
+ssh-keygen -t ecdsa -b 256 # same as omitting the -b flag
+ssh-keygen -t ecdsa -b 384
+ssh-keygen -t ecdsa -b 521
 ssh-keygen -t ecdsa-sk
 ssh-keygen -t ed25519
 ssh-keygen -t ed25519-sk
@@ -67,6 +70,12 @@ AAAAB3NzaC1kc3M=
 $ echo -ne "\0\0\0\x13ecdsa-sha2-nistp256" | base64
 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTY=
 
+$ echo -ne "\0\0\0\x13ecdsa-sha2-nistp384" | base64
+AAAAE2VjZHNhLXNoYTItbmlzdHAzODQ=
+
+$ echo -ne "\0\0\0\x13ecdsa-sha2-nistp521" | base64
+AAAAE2VjZHNhLXNoYTItbmlzdHA1MjE=
+
 $ echo -ne "\0\0\0\x22sk-ecdsa-sha2-nistp256@openssh.com" | base64
 AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20=
 
@@ -102,6 +111,8 @@ Because of this, if the base64 output final character is `=` the last 2 characte
 ```regex
 ^ssh-dss AAAAB3NzaC1kc3[0-9A-Za-z+/]+[=]{0,3}(\s.*)?$
 ^ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNT[0-9A-Za-z+/]+[=]{0,3}(\s.*)?$
+^ecdsa-sha2-nistp384 AAAAE2VjZHNhLXNoYTItbmlzdHAzOD[0-9A-Za-z+/]+[=]{0,3}(\s.*)?$
+^ecdsa-sha2-nistp521 AAAAE2VjZHNhLXNoYTItbmlzdHA1Mj[0-9A-Za-z+/]+[=]{0,3}(\s.*)?$
 ^sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb2[0-9A-Za-z+/]+[=]{0,3}(\s.*)?$
 ^ssh-ed25519 AAAAC3NzaC1lZDI1NTE5[0-9A-Za-z+/]+[=]{0,3}(\s.*)?$
 ^sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29t[0-9A-Za-z+/]+[=]{0,3}(\s.*)?$
@@ -113,7 +124,7 @@ Because of this, if the base64 output final character is `=` the last 2 characte
 ### Support all known key types (less secure)
 
 ```regex
-^(ssh-dss AAAAB3NzaC1kc3|ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNT|sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb2|ssh-ed25519 AAAAC3NzaC1lZDI1NTE5|sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29t|ssh-rsa AAAAB3NzaC1yc2)[0-9A-Za-z+/]+[=]{0,3}(\s.*)?$
+^(ssh-dss AAAAB3NzaC1kc3|ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNT|ecdsa-sha2-nistp384 AAAAE2VjZHNhLXNoYTItbmlzdHAzOD|ecdsa-sha2-nistp521 AAAAE2VjZHNhLXNoYTItbmlzdHA1Mj|sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb2|ssh-ed25519 AAAAC3NzaC1lZDI1NTE5|sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29t|ssh-rsa AAAAB3NzaC1yc2)[0-9A-Za-z+/]+[=]{0,3}(\s.*)?$
 ```
 
 `dsa` (`dss`) and `ecdsa`/`sk-ecdsa` may not be considered [secure](https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm#Security).
